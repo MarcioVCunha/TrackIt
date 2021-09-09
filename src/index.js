@@ -4,13 +4,18 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import './reset.css'
 
 import LoginScreen from './LoginScreen/LoginScreen'
+import SignUpScreen from './signUpScreen/SignUpScreen'
 
 function App() {
     return (
         <BrowserRouter>
             <Switch>
-                <Route path='/'>
+                <Route path='/' exact>
                     <LoginScreen />
+                </Route>
+
+                <Route path='/cadastro' exact>
+                    <SignUpScreen />
                 </Route>
             </Switch>
         </BrowserRouter>

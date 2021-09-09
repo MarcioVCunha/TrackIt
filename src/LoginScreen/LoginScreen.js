@@ -12,7 +12,7 @@ export default function LoginScreen() {
             <Inputs />
 
             <Link to='/cadastro'>
-                <p>Não tem uma conta? Cadastre-se</p>
+                <p>Não tem uma conta? Cadastre-se!</p>
             </Link>
         </Page>
     )
