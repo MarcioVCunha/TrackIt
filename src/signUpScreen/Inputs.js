@@ -1,9 +1,15 @@
 import { useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components'
+import { useHistory } from 'react-router';
 
 export default function Inputs() {
+    const history = useHistory();
+    const [loading, setLoading] = useState(false);
+
     function EnviarPost() {
+        setLoading(true);
+
         const objectPost = {
             email: email,
             name: nome,
@@ -15,15 +21,17 @@ export default function Inputs() {
     }
 
     function TratarSucesso(resp) {
-        
+        history.push('/');
     }
 
     function TratarErro(resp) {
         if (resp.response.status === 409) {
-            alert('Este usuário já existe');
+            alert('Este usuário(a) já existe');
         } else {
             alert('Confira se as informações estão preenchidas corretamentes')
         }
+
+        setLoading(false);
     }
 
     const [email, setEmail] = useState('');
@@ -32,12 +40,12 @@ export default function Inputs() {
     const [foto, setFoto] = useState('');
 
     return (
-        <Container>
-            <input placeholder='email' onChange={(e) => setEmail(e.target.value)} ></input>
-            <input placeholder='senha' onChange={(e) => setSenha(e.target.value)} ></input>
-            <input placeholder='nome' onChange={(e) => setNome(e.target.value)}></input>
-            <input placeholder='foto' onChange={(e) => setFoto(e.target.value)}></input>
-            <button onClick={EnviarPost}>Cadastrar</button>
+        <Container loading={loading}>
+            <input disabled={loading} placeholder='email' onChange={(e) => setEmail(e.target.value)} ></input>
+            <input disabled={loading} placeholder='senha' onChange={(e) => setSenha(e.target.value)} ></input>
+            <input disabled={loading} placeholder='nome' onChange={(e) => setNome(e.target.value)}></input>
+            <input disabled={loading} placeholder='foto' onChange={(e) => setFoto(e.target.value)}></input>
+            <button disabled={loading} onClick={EnviarPost}>Cadastrar</button>
         </Container>
     )
 }
@@ -56,6 +64,7 @@ const Container = styled.div`
         padding: 10px;
         font-size: 20px;
         margin: 5px auto 0 auto;
+        background-color: ${(props) => props.loading ? 'lightgray' : 'white'};
         ::placeholder{
             color: rgb(130, 130, 130);
         }
@@ -72,5 +81,6 @@ const Container = styled.div`
         font-size: 21px;
         margin: 10px auto 0 auto;
         cursor: pointer;
+        opacity: ${(props) => props.loading ? 0.7 : 1};
     }
 `
