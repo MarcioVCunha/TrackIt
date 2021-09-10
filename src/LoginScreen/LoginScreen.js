@@ -8,9 +8,7 @@ export default function LoginScreen() {
     return (
         <Page>
             <img src={Logo} alt='Logo do TrackIt' />
-
             <Inputs />
-
             <Link to='/cadastro'>
                 <p>Não tem uma conta? Cadastre-se!</p>
             </Link>

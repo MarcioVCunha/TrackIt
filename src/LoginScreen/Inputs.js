@@ -1,19 +1,31 @@
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import axios from 'axios';
+import Loader from 'react-loader-spinner';
+import UserContext from '../Contexts/UserContext';
 
 export default function Inputs() {
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
     const [loading, setLoading] = useState(false);
+    const [buttonContent, setButtonContent] = useState('Entrar');
     const history = useHistory();
+    const { toke, setToken } = useContext(UserContext);
 
     function AveriguarLogin() {
         if (email === '' || senha === '') {
             alert('Preencha os campos de email e senha')
         } else {
             setLoading(true);
+            setButtonContent(
+                <Loader
+                    type="ThreeDots"
+                    color="white"
+                    height={45}
+                    width={100}
+                />
+            )
             axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login', {
                 email: email,
                 password: senha
@@ -22,7 +34,8 @@ export default function Inputs() {
     }
 
     function TratarSucesso(resp) {
-        history.push('/habito')
+        setToken(resp.data.token);
+        history.push('/habito');
     }
 
     function TratarErro(resp, event) {
@@ -32,13 +45,14 @@ export default function Inputs() {
             alert('Preencha corretamente os campos')
         }
         setLoading(false);
+        setButtonContent('Entrar');
     }
 
     return (
         <Container loading={loading}>
             <input disabled={loading} placeholder='email' onChange={(event) => setEmail(event.target.value)}></input>
             <input disabled={loading} placeholder='senha' onChange={(event) => setSenha(event.target.value)}></input>
-            <button disabled={loading} onClick={AveriguarLogin}>Entrar</button>
+            <button disabled={loading} onClick={AveriguarLogin}>{buttonContent}</button>
         </Container>
     )
 }

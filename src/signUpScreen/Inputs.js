@@ -2,21 +2,33 @@ import { useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components'
 import { useHistory } from 'react-router';
+import Loader from 'react-loader-spinner';
 
 export default function Inputs() {
     const history = useHistory();
     const [loading, setLoading] = useState(false);
+    const [email, setEmail] = useState('');
+    const [senha, setSenha] = useState('');
+    const [nome, setNome] = useState('');
+    const [foto, setFoto] = useState('');
+    const [buttonContent, setButtonContent] = useState('Cadastrar');
 
     function EnviarPost() {
         setLoading(true);
-
+        setButtonContent(
+            <Loader
+                type="ThreeDots"
+                color="white"
+                height={45}
+                width={100}
+            />
+        )
         const objectPost = {
             email: email,
             name: nome,
             image: foto,
             password: senha
         }
-
         axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up', objectPost).then(TratarSucesso).catch(TratarErro);
     }
 
@@ -30,14 +42,9 @@ export default function Inputs() {
         } else {
             alert('Confira se as informações estão preenchidas corretamentes')
         }
-
         setLoading(false);
+        setButtonContent('Cadastrar');
     }
-
-    const [email, setEmail] = useState('');
-    const [senha, setSenha] = useState('');
-    const [nome, setNome] = useState('');
-    const [foto, setFoto] = useState('');
 
     return (
         <Container loading={loading}>
@@ -45,7 +52,7 @@ export default function Inputs() {
             <input disabled={loading} placeholder='senha' onChange={(e) => setSenha(e.target.value)} ></input>
             <input disabled={loading} placeholder='nome' onChange={(e) => setNome(e.target.value)}></input>
             <input disabled={loading} placeholder='foto' onChange={(e) => setFoto(e.target.value)}></input>
-            <button disabled={loading} onClick={EnviarPost}>Cadastrar</button>
+            <button disabled={loading} onClick={EnviarPost}>{buttonContent}</button>
         </Container>
     )
 }
