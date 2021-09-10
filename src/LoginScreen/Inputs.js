@@ -11,7 +11,7 @@ export default function Inputs() {
     const [loading, setLoading] = useState(false);
     const [buttonContent, setButtonContent] = useState('Entrar');
     const history = useHistory();
-    const { toke, setToken } = useContext(UserContext);
+    const { setInfoUser } = useContext(UserContext);
 
     function AveriguarLogin() {
         if (email === '' || senha === '') {
@@ -34,7 +34,7 @@ export default function Inputs() {
     }
 
     function TratarSucesso(resp) {
-        setToken(resp.data.token);
+        setInfoUser(resp.data);
         history.push('/habito');
     }
 

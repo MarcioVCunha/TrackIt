@@ -11,10 +11,10 @@ import HabitScreen from './HabitScreen/HabbitScreen'
 
 
 function App() {
-    const [token, setToken] = useState('');
+    const [infoUser, setInfoUser] = useState('');
 
     return (
-        <UserContext.Provider value={{token, setToken}}>
+        <UserContext.Provider value={{ infoUser, setInfoUser }}>
             <BrowserRouter>
                 <Switch>
                     <Route path='/' exact>
