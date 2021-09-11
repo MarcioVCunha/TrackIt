@@ -7,14 +7,17 @@ import './reset.css'
 
 import LoginScreen from './LoginScreen/LoginScreen'
 import SignUpScreen from './signUpScreen/SignUpScreen'
-import HabitScreen from './HabitScreen/HabbitScreen'
+import HabitScreen from './HabitScreen/HabitsScreen'
+import TodayScreen from './TodayScreen/TodayScreen'
+import HistoryScreen from './HistoryScreen/HistoryScreen'
 
 
 function App() {
     const [infoUser, setInfoUser] = useState('');
+    const [config, setConfig] = useState('');
 
     return (
-        <UserContext.Provider value={{ infoUser, setInfoUser }}>
+        <UserContext.Provider value={{ infoUser, setInfoUser, config, setConfig }}>
             <BrowserRouter>
                 <Switch>
                     <Route path='/' exact>
@@ -25,8 +28,16 @@ function App() {
                         <SignUpScreen />
                     </Route>
 
-                    <Route path='/habito' exact>
+                    <Route path='/hoje' exact>
+                        <TodayScreen />
+                    </Route>
+
+                    <Route path='/habitos' exact>
                         <HabitScreen />
+                    </Route>
+
+                    <Route path='/historico' exact>
+                        <HistoryScreen />
                     </Route>
                 </Switch>
             </BrowserRouter>

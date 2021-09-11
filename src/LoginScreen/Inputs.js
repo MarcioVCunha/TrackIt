@@ -11,7 +11,7 @@ export default function Inputs() {
     const [loading, setLoading] = useState(false);
     const [buttonContent, setButtonContent] = useState('Entrar');
     const history = useHistory();
-    const { setInfoUser } = useContext(UserContext);
+    const { setInfoUser, setConfig } = useContext(UserContext);
 
     function AveriguarLogin() {
         if (email === '' || senha === '') {
@@ -35,7 +35,12 @@ export default function Inputs() {
 
     function TratarSucesso(resp) {
         setInfoUser(resp.data);
-        history.push('/habito');
+        setConfig({
+            headers: {
+                Authorization: `Bearer ${resp.data.token}`
+            }
+        })
+        history.push('/hoje');
     }
 
     function TratarErro(resp, event) {
