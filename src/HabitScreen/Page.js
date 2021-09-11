@@ -1,14 +1,21 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import Habits from './Habits';
 
 export default function Page() {
+    const [create, setCreate] = useState(false);
+    const [noHabits, setNoHabits] = useState(true);
+
     return (
         <Main>
             <MenuCreateHabit>
                 <p>Meus hábitos</p>
-                <button>+</button>
+                <button onClick={() => setCreate(true)}>+</button>
             </MenuCreateHabit>
-            <Habits />
+            <ContainerHabits create={create}>
+                <Habits setCreate={setCreate}></Habits>
+            </ContainerHabits>
+            <NoHabitsText noHabits={noHabits}>Você não tem nenhum hábito cadastrado ainda. adcione um hábito para começar a trackear!</NoHabitsText>
         </Main>
     )
 }
@@ -45,4 +52,18 @@ const MenuCreateHabit = styled.div`
         border: none;
         border-radius: 4px;
     }
+`
+
+const ContainerHabits = styled.div`
+    display: ${((props) => props.create ? 'flex' : 'none')};
+    margin: 30px auto 0 auto;
+`
+
+const NoHabitsText = styled.p`
+    display: ${((props) => props.noHabits ? 'flex' : 'none')};
+    width: 90%;
+    margin-top: 40px;
+    font-size: 18px;
+    color: rgb(102, 102, 102);
+    line-height: 24px;
 `
