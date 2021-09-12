@@ -1,14 +1,14 @@
-import styled from 'styled-components'
-import HabitsContext from '../Contexts/HabitsContext'
-import { useContext, useState } from 'react'
-import UserContext from '../Contexts/UserContext'
-import axios from 'axios'
+import styled from 'styled-components';
+import HabitsContext from '../Contexts/HabitsContext';
+import { useContext, useState } from 'react';
+import UserContext from '../Contexts/UserContext';
+import axios from 'axios';
 import Loader from 'react-loader-spinner';
 
-import Button from './Button'
+import Button from './Button';
 
 export default function Habits(props) {
-    const { setCreate } = props;
+    const { setCreate, loadHabits } = props;
     const { config } = useContext(UserContext);
     const days = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S']
     const infoHabit = {
@@ -31,7 +31,6 @@ export default function Habits(props) {
                     height={20}
                 />
             )
-
             axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits', infoHabit, config).then(TratarSucesso).catch(TratarErro);
         }
     }
@@ -39,14 +38,13 @@ export default function Habits(props) {
     function TratarSucesso(resp) {
         setCreate(false);
         setLoading(false);
-        infoHabit = {
-            name: '',
-            days: [] 
-        };
+        infoHabit.name = '';
+        infoHabit.days = [];
         setButtonContent('Salvar');
+        loadHabits();
     }
 
-    function TratarErro(resp){
+    function TratarErro(resp) {
         alert('Seu login expirou, favor fazer login novamente.');
         setLoading(false);
         setButtonContent('Salvar');

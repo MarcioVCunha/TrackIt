@@ -1,10 +1,30 @@
-import { useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Habits from './Habits';
+import ListHabits from './ListHabits';
+import UserContext from '../Contexts/UserContext';
+import axios from 'axios';
 
 export default function Page() {
     const [create, setCreate] = useState(false);
     const [noHabits, setNoHabits] = useState(true);
+    const [listHabits, setListHabits] = useState([]);
+    const { config } = useContext(UserContext);
+
+    function loadHabits() {
+        axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits', config).then(TratarSucesso)
+    };
+
+    function TratarSucesso(resp) {
+        if (resp.data.length === 0) {
+            setNoHabits(true);
+        } else {
+            setNoHabits(false);
+            setListHabits(resp.data);
+        }
+    }
+
+    useEffect(() => { loadHabits() }, [])
 
     return (
         <Main>
@@ -13,17 +33,19 @@ export default function Page() {
                 <button onClick={() => setCreate(true)}>+</button>
             </MenuCreateHabit>
             <ContainerHabits create={create}>
-                <Habits setCreate={setCreate}></Habits>
+                <Habits loadHabits={loadHabits} setCreate={setCreate}></Habits>
             </ContainerHabits>
+            <ListHabits loadHabits={loadHabits} listHabits={listHabits} setNoHabits={setNoHabits} />
             <NoHabitsText noHabits={noHabits}>Você não tem nenhum hábito cadastrado ainda. adcione um hábito para começar a trackear!</NoHabitsText>
         </Main>
     )
 }
 
 const Main = styled.main`
-height: calc(100vh - 70px);
+height: 100%;
     width: 100vw;
-    margin-top: 70px;
+    margin: 70px auto;
+    padding-bottom: 50px;
     display: flex;
     flex-direction: column;
     align-items: center;
