@@ -11,7 +11,7 @@ export default function Button(props) {
     function MarkHabit(e, i) {
         if (isMarked === false) {
             setIsMarked(true);
-            infoHabit.days.push(i + 1);
+            infoHabit.days.push(i);
         } else {
             setIsMarked(false);
             infoHabit.days.splice(i, 1);

@@ -1,12 +1,16 @@
 import styled from 'styled-components';
+import dayjs from 'dayjs';
+import 'dayjs/locale/pt-br'
+import TodayHabits from './TodayHabits';
 
 export default function Page() {
     return (
         <Section>
             <TodayInformations>
-                <h1>Segunda, 17/05</h1>
+                <h1>{dayjs().locale('pt-br').format('dddd, DD/MM')}</h1>
                 <p>Nenhum hábito concluído ainda</p>
             </TodayInformations>
+            <TodayHabits />
         </Section>
     )
 }
