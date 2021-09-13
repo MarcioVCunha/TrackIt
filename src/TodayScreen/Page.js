@@ -2,15 +2,25 @@ import styled from 'styled-components';
 import dayjs from 'dayjs';
 import 'dayjs/locale/pt-br'
 import TodayHabits from './TodayHabits';
+import { useState } from 'react';
 
 export default function Page() {
+    const [percent, setPercent] = useState(0);
+    let content = '';
+
+    if(percent === 0){
+        content = 'Nenhum hábito concluído ainda';
+    } else {
+        content = `${percent*100}% dos hábitos concluídos`;
+    }
+
     return (
         <Section>
-            <TodayInformations>
+            <TodayInformations percent={percent}>
                 <h1>{dayjs().locale('pt-br').format('dddd, DD/MM')}</h1>
-                <p>Nenhum hábito concluído ainda</p>
+                <p>{content}</p>
             </TodayInformations>
-            <TodayHabits />
+            <TodayHabits setPercent={setPercent} />
         </Section>
     )
 }
@@ -29,7 +39,7 @@ const TodayInformations = styled.div`
 
     p {
         font-size: 18px;
-        color: rgb(186, 186, 186);
+        color: ${(props) => props.percent === 0 ? 'rgb(186, 186, 186)' : 'rgb(143, 197, 73)'};
         margin-top: 10px;
     }
 `

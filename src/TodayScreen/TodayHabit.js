@@ -1,17 +1,42 @@
 import styled from "styled-components";
 import Check from '../Assets/CheckBox.svg'
+import { useContext } from 'react';
+import UserContext from '../Contexts/UserContext';
+import axios from 'axios';
 
 export default function TodayHabit(props) {
-    const { name, done, currentSequence, highestSequence } = props.habit;
+    const { habit, loadHabits } = props;
+    const { name, done, currentSequence, highestSequence, id } = habit;
+    const { config } = useContext(UserContext);
+
+    function isMarked(){
+        if(done === false){
+            axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/check`, '' ,config).then(TratarSucessoMarking).catch(TratarErro);
+        } else {
+            axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/uncheck`, '' ,config).then(TratarSucessoUnmarking).catch(TratarErro);
+        }
+    }
+
+    function TratarSucessoMarking(){
+        loadHabits();
+    }
+
+    function TratarSucessoUnmarking(){
+        loadHabits();
+    }
+
+    function TratarErro(){
+        alert('Seu login expirou');
+    }
 
     return (
-        <ContainerHabit>
+        <ContainerHabit onClick={isMarked}>
             <ContainerText>
                 <Tittle>{name}</Tittle>
-                <CurrentStreak>Sequência atual: {currentSequence} dias</CurrentStreak>
-                <HighestStreak>Seu recorde: {highestSequence} dias</HighestStreak>
+                <CurrentStreak done={done}>Sequência atual: <span>{currentSequence} dias</span></CurrentStreak>
+                <HighestStreak currentSequence={currentSequence} highestSequence={highestSequence} done={done}>Seu recorde: <span>{highestSequence} dias</span></HighestStreak>
             </ContainerText>
-            <Button>
+            <Button done={done}>
                 <img src={Check} alt='Check Sign' />
             </Button>
         </ContainerHabit>
@@ -44,18 +69,31 @@ const CurrentStreak = styled.p`
     margin-top: 15px;
     font-size: 14px;
     color: rgb(102, 102, 102);
+
+    span {
+        color: ${(props) => props.done ? 'rgb(143, 197, 73)' : 'rgb(102, 102, 102)'};
+    }
 `
 
 const HighestStreak = styled.p`
     font-size: 14px;
     color: rgb(102, 102, 102);
+
+    span {
+        color: ${(props) => {
+            if (props.done && (props.highestSequence <= props.currentSequence)) {
+                return ('rgb(143, 197, 73)');
+          } else {
+                return ('rgb(102, 102, 102)');
+          }
+       }}
+    }
 `
 
 const Button = styled.button`
-    background-color: red;
     height: 70px;
     width: 70px;
-    background-color: rgb(235, 235, 235);
+    background-color: ${(props) => props.done ? 'rgb(143, 197, 73)' : 'rgb(231, 231, 231)'};
     border: none;
     border-radius: 5px;
 `
