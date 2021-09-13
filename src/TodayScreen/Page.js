@@ -2,10 +2,11 @@ import styled from 'styled-components';
 import dayjs from 'dayjs';
 import 'dayjs/locale/pt-br'
 import TodayHabits from './TodayHabits';
-import { useState } from 'react';
+import { useContext } from 'react';
+import UserContext from '../Contexts/UserContext';
 
 export default function Page() {
-    const [percent, setPercent] = useState(0);
+    const { percent } = useContext(UserContext);
     let content = '';
 
     if(percent === 0){
@@ -20,7 +21,7 @@ export default function Page() {
                 <h1>{dayjs().locale('pt-br').format('dddd, DD/MM')}</h1>
                 <p>{content}</p>
             </TodayInformations>
-            <TodayHabits setPercent={setPercent} />
+            <TodayHabits />
         </Section>
     )
 }

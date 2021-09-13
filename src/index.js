@@ -15,9 +15,10 @@ import HistoryScreen from './HistoryScreen/HistoryScreen'
 function App() {
     const [infoUser, setInfoUser] = useState('');
     const [config, setConfig] = useState('');
+    const [percent, setPercent] = useState(0);
 
     return (
-        <UserContext.Provider value={{ infoUser, setInfoUser, config, setConfig }}>
+        <UserContext.Provider value={{ infoUser, setInfoUser, config, setConfig, percent, setPercent }}>
             <BrowserRouter>
                 <Switch>
                     <Route path='/' exact>

@@ -1,13 +1,34 @@
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+import { CircularProgressbar } from 'react-circular-progressbar';
+import { useContext } from 'react';
+import UserContext from './Contexts/UserContext';
 
-export default function Footer(){
-    return(
+export default function Footer() {
+    const { percent } = useContext(UserContext)
+
+    return (
         <BottomBar>
             <Link to='/habitos'>Hábitos</Link>
 
             <Link to='/hoje'>
-                <button>Hoje</button>
+                <button>
+                    <CircularProgressbar
+                        value={percent*100}
+                        text={'Hoje'}
+                        styles={{
+                            path: {
+                                stroke: 'white',
+                                strokeLinecap: 'round',
+                                transition: 'stroke-dashoffset 0.5s ease 0s'
+                            },
+                            text: {
+                                fill: 'white',
+                                fontSize: '28px',
+                            }
+                        }}
+                    />
+                </button>
             </Link>
 
             <Link to='/historico'>Histórico</Link>
@@ -39,8 +60,9 @@ const BottomBar = styled.footer`
         height: 90px;
         width: 90px;
         background-color: rgb(82, 182, 255);
-        color: white;
-        font-size: 18px;
         margin-bottom: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 `

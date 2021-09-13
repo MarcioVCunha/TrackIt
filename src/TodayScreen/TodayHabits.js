@@ -3,10 +3,9 @@ import axios from 'axios';
 import UserContext from '../Contexts/UserContext';
 import TodayHabit from './TodayHabit';
 
-export default function TodayHabits(props) {
-    const { config } = useContext(UserContext);
+export default function TodayHabits() {
+    const { config, setPercent } = useContext(UserContext);
     const [todayHabits, setTodayHabits] = useState([]);
-    const { setPercent } = props;
     let listAllDones = [];
 
     function loadHabits() {
